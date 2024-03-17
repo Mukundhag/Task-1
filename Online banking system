@@ -1,0 +1,78 @@
+import java.util.Scanner;
+
+class User {
+    private String username;
+    private String password;
+    private double balance;
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.balance = 0.0;
+    }
+
+    public boolean authenticate(String username, String password) {
+        return this.username.equals(username) && this.password.equals(password);
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+        } else {
+            System.out.println("Insufficient funds");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class OnlineBankingSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        User user = new User("username", "password");
+
+        System.out.println("Welcome to Online Banking System");
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
+        if (user.authenticate(username, password)) {
+            System.out.println("Authentication successful");
+            System.out.println("Your current balance is: $" + user.getBalance());
+
+            while (true) {
+                System.out.println("\nChoose an option:");
+                System.out.println("1. Deposit");
+                System.out.println("2. Withdraw");
+                System.out.println("3. Exit");
+                int choice = scanner.nextInt();
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter deposit amount: $");
+                        double depositAmount = scanner.nextDouble();
+                        user.deposit(depositAmount);
+                        System.out.println("Deposit successful. Your new balance is: $" + user.getBalance());
+                        break;
+                    case 2:
+                        System.out.print("Enter withdrawal amount: $");
+                        double withdrawalAmount = scanner.nextDouble();
+                        user.withdraw(withdrawalAmount);
+                        System.out.println("Withdrawal successful. Your new balance is: $" + user.getBalance());
+                        break;
+                    case 3:
+                        System.out.println("Exiting...");
+                        System.exit(0);
+                    default:
+                        System.out.println("Invalid choice. Please try again.");
+                }
+            }
+        } else {
+            System.out.println("Authentication failed. Please try again.");
